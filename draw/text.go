@@ -116,5 +116,14 @@ func Clip(img *image.Gray) image.Image {
 
 	}
 
-	return img.SubImage(image.Rect(leftBorder - 1, upBorder, rightBorder + 1, downBorder))
+	// possible issue
+	if leftBorder > 0 {
+		leftBorder -= 1
+	}
+	if downBorder <= 0 {
+		downBorder = Y
+	}
+	rightBorder += 1
+
+	return img.SubImage(image.Rect(leftBorder, upBorder, rightBorder, downBorder))
 }
