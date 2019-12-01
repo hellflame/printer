@@ -47,6 +47,7 @@ func Text(text string, fontPath string) *image.Gray {
 }
 
 // clip text image to right size
+// for golang doesn't have any direct way to get render string size
 func Clip(img *image.Gray) image.Image {
 
 	bound := img.Bounds().Max
