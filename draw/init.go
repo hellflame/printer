@@ -13,6 +13,7 @@ const VERSION = "0.1.0"
 var DefaultWidth = 50
 var DefaultHeight = 80
 var IsWindows = false
+var FillBytes []int
 
 func init() {
 	if runtime.GOOS == "windows" {
@@ -27,5 +28,8 @@ func init() {
 			DefaultHeight, _ = strconv.Atoi(parse[0])
 			DefaultWidth, _ = strconv.Atoi(parse[1])
 		}
+	}
+	for i := 32; i < 256; i ++ {
+		FillBytes = append(FillBytes, i)
 	}
 }
