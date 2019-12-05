@@ -3,10 +3,22 @@
 package draw
 
 import (
+	"image"
 	_ "image/jpeg"
+	"log"
+	"os"
 )
 
 
-func colorToGray(r, g, b, a uint32) uint8{
-	return uint8((19595*r + 38470*g + 7471*b + 1<<15) >> 24)
+func LoadImage(imgPath string) image.Image {
+	f, err := os.Open(imgPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {_ = f.Close()}()
+	img, _, err := image.Decode(f)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return img
 }

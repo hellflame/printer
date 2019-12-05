@@ -27,16 +27,22 @@ func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 		var row []string
 		for x := 0; x < X; x ++ {
 			var pix string
-			r, g, b, a := src.At(x, y).RGBA()
+			r, g, b, _ := src.At(x, y).RGBA()
 			if grayMode {
-				shade := colorToGray(r, g, b, a)
-				if reverse {
-					pix = string(FillBytes[(255 - shade) * fill / 255])
-				}else {
-					pix = string(FillBytes[shade * fill / 255])
+				shade := colorToGray(r, g, b)
+				if shade < 255 {
+					shade = 0 // image binary
 				}
+				if reverse {
+					pix = string(FillBytes[(255 - shade) * fill / FillLength])
+				}else {
+					pix = string(FillBytes[shade * fill / FillLength])
+				}
+
+
 			}else {
-				pix = fmt.Sprintf("\033[0;38;2;%d;%d;%dm%s", r, g, b, string(FillBytes[fill]))
+				pix = fmt.Sprintf("\033[0;38;2;%d;%d;%dm%s",
+					r / 257, g / 257, b / 257, string(FillBytes[fill]))
 			}
 			if colorCode == 0 {
 				// random color mode
@@ -53,4 +59,8 @@ func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 	}
 	// colorCode < 0
 	return renderResult
+}
+
+func colorToGray(r, g, b uint32) uint8{
+	return uint8((19595*r + 38470*g + 7471*b + 1<<15) >> 24)
 }
