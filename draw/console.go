@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// generate terminal string
 func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 	reverse bool, grayMode bool) string {
 	var renders []string
@@ -19,13 +20,13 @@ func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 	var fill uint8
 	if fillIndex < 0 {
 		fill = 4
-	}else {
+	} else {
 		fill = uint8(fillIndex)
 	}
 	colorPool := rand.New(rand.NewSource(time.Now().UnixNano()))
-	for y := 0; y < Y; y ++ {
+	for y := 0; y < Y; y++ {
 		var row []string
-		for x := 0; x < X; x ++ {
+		for x := 0; x < X; x++ {
 			var pix string
 			r, g, b, _ := src.At(x, y).RGBA()
 			if grayMode {
@@ -34,19 +35,18 @@ func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 					shade = 0 // image binary
 				}
 				if reverse {
-					pix = string(FillBytes[(255 - shade) * fill / FillLength])
-				}else {
-					pix = string(FillBytes[shade * fill / FillLength])
+					pix = string(FillBytes[(255-shade)*fill/FillLength])
+				} else {
+					pix = string(FillBytes[shade*fill/FillLength])
 				}
 
-
-			}else {
+			} else {
 				pix = fmt.Sprintf("\033[0;38;2;%d;%d;%dm%s",
-					r / 257, g / 257, b / 257, string(FillBytes[fill]))
+					r/257, g/257, b/257, string(FillBytes[fill]))
 			}
 			if colorCode == 0 {
 				// random color mode
-				pix = fmt.Sprintf("\033[01;%dm%s", colorPool.Intn(10) + 30, pix)
+				pix = fmt.Sprintf("\033[01;%dm%s", colorPool.Intn(10)+30, pix)
 			}
 			row = append(row, pix)
 		}
@@ -61,6 +61,6 @@ func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 	return renderResult
 }
 
-func colorToGray(r, g, b uint32) uint8{
+func colorToGray(r, g, b uint32) uint8 {
 	return uint8((19595*r + 38470*g + 7471*b + 1<<15) >> 24)
 }

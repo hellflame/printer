@@ -11,6 +11,7 @@ import (
 	"unicode/utf8"
 )
 
+// render text with given font
 func Text(text string, fontPath string) *image.Gray {
 	fontBytes, err := ioutil.ReadFile(fontPath)
 	if err != nil {

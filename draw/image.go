@@ -9,13 +9,13 @@ import (
 	"os"
 )
 
-
+// load image
 func LoadImage(imgPath string) image.Image {
 	f, err := os.Open(imgPath)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer func() {_ = f.Close()}()
+	defer func() { _ = f.Close() }()
 	img, _, err := image.Decode(f)
 	if err != nil {
 		log.Fatal(err)
