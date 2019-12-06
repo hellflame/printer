@@ -4,6 +4,7 @@ BINARY_NAME = printer
 
 tidy:
 	find . -name "*.go" -type f -not -path "./vendor/*" | xargs -n1 go fmt
+	go mod tidy
 
 build: build-darwin build-linux build-windows
 
