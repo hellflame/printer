@@ -18,6 +18,7 @@ var FillBytes []int
 var FontBase string
 var DefaultFonts = []string{"shuyan.ttf", "letter.ttf",
 	"Haibaoyuanyuan.ttf", "fengyun.ttf"}
+
 const FontUrl = "https://raw.githubusercontent.com/hellflame/terminal_printer/" +
 	"808004a7cd41b4383bfe6aa310c491c69d9b2556/fonts/"
 
@@ -44,9 +45,9 @@ func init() {
 
 	usr, err := user.Current()
 	var homeDIR string
-	if err != nil{
+	if err != nil {
 		homeDIR = "."
-	}else {
+	} else {
 		homeDIR = usr.HomeDir
 	}
 	FontBase = homeDIR + "/.terminal_fonts/"

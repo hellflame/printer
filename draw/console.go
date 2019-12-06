@@ -33,7 +33,7 @@ func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 				shade := uint8((19595*r + 38470*g + 7471*b + 1<<15) >> 24) // convert to gray
 				if shade < 128 {
 					shade = 0 // image binary
-				}else {
+				} else {
 					shade = 255
 				}
 				if reverse {
@@ -62,4 +62,3 @@ func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 	// colorCode < 0
 	return renderResult
 }
-

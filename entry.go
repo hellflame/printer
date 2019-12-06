@@ -16,7 +16,7 @@ import (
 func exist(p string) bool {
 	s, err := os.Stat(p)
 	if err == nil {
-		if !s.IsDir(){
+		if !s.IsDir() {
 			return true
 		}
 	}
@@ -25,21 +25,21 @@ func exist(p string) bool {
 
 func downloadFont(fontName string) {
 	savePath := draw.FontBase + fontName
-	if exist(savePath){
+	if exist(savePath) {
 		return
 	}
 	fmt.Printf("downloading font %s ...", fontName)
 	resp, err := http.Get(draw.FontUrl + fontName)
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
-	defer func() {_ = resp.Body.Close()}()
+	defer func() { _ = resp.Body.Close() }()
 	stat, err := os.Stat(draw.FontBase)
 	if err == nil {
 		if !stat.IsDir() {
 			log.Fatalf("save path is not dir, %s", draw.FontBase)
 		}
-	}else {
+	} else {
 		if err = os.MkdirAll(draw.FontBase, 0755); err != nil {
 			log.Fatal(err)
 		}
@@ -52,17 +52,17 @@ func downloadFont(fontName string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer func() {_ = saver.Close()}()
+	defer func() { _ = saver.Close() }()
 	_, _ = saver.Write(content)
 	fmt.Println("font saved")
 }
 
-func runner() (){
+func runner() {
 	var imgPath string
 	var run bool
 	cmd := &cobra.Command{
-		Use: "printer",
-		Short: "terminal printer",
+		Use:     "printer",
+		Short:   "terminal printer",
 		Version: draw.VERSION,
 		Run: func(cmd *cobra.Command, args []string) {
 			if len(args) == 1 {
@@ -81,10 +81,10 @@ func runner() (){
 	font := flag.String("font", "0", "font path or font index")
 	reverse := flag.BoolP("reverse", "r", true, "reverse back & foreground")
 	err := cmd.Execute()
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
-	if !run{
+	if !run {
 		return
 	}
 
@@ -92,21 +92,21 @@ func runner() (){
 
 	if imgPath != "" && exist(imgPath) {
 		img = draw.LoadImage(imgPath)
-	}else {
+	} else {
 		fontIndex, err := strconv.Atoi(*font)
-		if err != nil{
+		if err != nil {
 			// font is given by user
 			if exist(*font) {
 				img = draw.Clip(draw.Text(*text, *font))
-			}else {
+			} else {
 				log.Fatal("font path not exist")
 			}
-		}else {
+		} else {
 			if 0 <= fontIndex && fontIndex < len(draw.DefaultFonts) {
 				// font is provide
 				fontPath := draw.DefaultFonts[fontIndex]
 				downloadFont(fontPath)
-				fmt.Println(draw.FontBase+fontPath)
+				fmt.Println(draw.FontBase + fontPath)
 				img = draw.Clip(draw.Text(*text, draw.FontBase+fontPath))
 			}
 		}
@@ -116,7 +116,6 @@ func runner() (){
 	img = resize.Resize(*width, *height, img, resize.Bilinear)
 	fmt.Println(draw.GeneratePixel(&img, *filter, *color, *reverse, *gray))
 }
-
 
 func main() {
 	runner()
