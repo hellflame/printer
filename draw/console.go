@@ -30,9 +30,11 @@ func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 			var pix string
 			r, g, b, _ := src.At(x, y).RGBA()
 			if grayMode {
-				shade := colorToGray(r, g, b)
-				if shade < 255 {
+				shade := uint8((19595*r + 38470*g + 7471*b + 1<<15) >> 24) // convert to gray
+				if shade < 128 {
 					shade = 0 // image binary
+				}else {
+					shade = 255
 				}
 				if reverse {
 					pix = string(FillBytes[(255-shade)*fill/FillLength])
@@ -61,6 +63,3 @@ func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 	return renderResult
 }
 
-func colorToGray(r, g, b uint32) uint8 {
-	return uint8((19595*r + 38470*g + 7471*b + 1<<15) >> 24)
-}
