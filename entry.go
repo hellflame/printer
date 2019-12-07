@@ -108,6 +108,9 @@ func runner() {
 				fontPath := draw.DefaultFonts[fontIndex]
 				downloadFont(fontPath)
 				img = draw.Clip(draw.Text(*text, draw.FontBase+fontPath))
+			}else {
+				fmt.Printf("font index should be 0 ~ %d\n", len(draw.DefaultFonts) - 1)
+				return
 			}
 		}
 		*gray = true
