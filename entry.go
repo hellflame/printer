@@ -107,7 +107,6 @@ func runner() {
 				// font is provide
 				fontPath := draw.DefaultFonts[fontIndex]
 				downloadFont(fontPath)
-				fmt.Println(draw.FontBase + fontPath)
 				img = draw.Clip(draw.Text(*text, draw.FontBase+fontPath))
 			}
 		}
