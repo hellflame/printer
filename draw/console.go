@@ -12,7 +12,7 @@ import (
 
 // generate terminal string
 func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
-	reverse bool, grayMode bool) string {
+	reverse bool, grayMode bool, shadeCliff uint8) string {
 	var renders []string
 	src := *img
 	bound := src.Bounds().Max
@@ -29,24 +29,24 @@ func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 		for x := 0; x < X; x++ {
 			var pix string
 			r, g, b, _ := src.At(x, y).RGBA()
-			if grayMode {
+			if grayMode || IsShabby {
 				shade := uint8((19595*r + 38470*g + 7471*b + 1<<15) >> 24) // convert to gray
-				if shade < 128 {
+				if shade < shadeCliff {
 					shade = 0 // image binary
 				} else {
 					shade = 255
 				}
 				if reverse {
-					pix = string(FillBytes[(255-shade)*fill/FillLength])
-				} else {
 					pix = string(FillBytes[shade*fill/FillLength])
+				} else {
+					pix = string(FillBytes[(255-shade)*fill/FillLength])
 				}
 
 			} else {
 				pix = fmt.Sprintf("\033[0;38;2;%d;%d;%dm%s",
 					r/257, g/257, b/257, string(FillBytes[fill]))
 			}
-			if colorCode == 0 {
+			if colorCode == 0 && !IsShabby {
 				// random color mode
 				pix = fmt.Sprintf("\033[01;%dm%s", colorPool.Intn(10)+30, pix)
 			}
@@ -60,5 +60,5 @@ func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 		renderResult = fmt.Sprintf("\033[01;%dm", colorCode) + renderResult
 	}
 	// colorCode < 0
-	return renderResult
+	return renderResult + "\033[00m"
 }

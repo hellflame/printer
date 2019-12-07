@@ -77,9 +77,10 @@ func runner() {
 	height := flag.UintP("height", "e", uint(draw.DefaultHeight), "default console height")
 	filter := flag.IntP("filter", "f", 73, "filter ascii code")
 	color := flag.IntP("color", "c", 0, "color code, 30 ~ 50")
-	gray := flag.Bool("gray", false, "gray mode")
+	gray := flag.BoolP("gray", "g", false, "gray mode")
+	shade := flag.Uint8P("shade", "s", 128, "shade cliff")
 	font := flag.String("font", "0", "font path or font index")
-	reverse := flag.BoolP("reverse", "r", true, "reverse back & foreground")
+	reverse := flag.BoolP("reverse", "r", false, "reverse back & foreground")
 	err := cmd.Execute()
 	if err != nil {
 		log.Fatal(err)
@@ -114,7 +115,7 @@ func runner() {
 	}
 
 	img = resize.Resize(*width, *height, img, resize.Bilinear)
-	fmt.Println(draw.GeneratePixel(&img, *filter, *color, *reverse, *gray))
+	fmt.Println(draw.GeneratePixel(&img, *filter, *color, *reverse, *gray, *shade))
 }
 
 func main() {
