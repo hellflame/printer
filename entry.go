@@ -75,7 +75,7 @@ func runner() {
 	text := flag.StringP("text", "t", "hellflame", "render text content")
 	width := flag.UintP("width", "w", uint(draw.DefaultWidth), "default console width")
 	height := flag.UintP("height", "e", uint(draw.DefaultHeight), "default console height")
-	filter := flag.IntP("filter", "f", 73, "filter ascii code")
+	filter := flag.IntP("filter", "f", 73, fmt.Sprintf("filter ascii code, 0 ~ %d", draw.FillLength-1))
 	color := flag.IntP("color", "c", 0, "color code, 30 ~ 50")
 	gray := flag.BoolP("gray", "g", false, "gray mode")
 	shade := flag.Uint8P("shade", "s", 128, "shade cliff")
@@ -109,8 +109,8 @@ func runner() {
 				fontPath := draw.DefaultFonts[fontIndex]
 				downloadFont(fontPath)
 				img = draw.Clip(draw.Text(*text, draw.FontBase+fontPath))
-			}else {
-				fmt.Printf("font index should be 0 ~ %d\n", len(draw.DefaultFonts) - 1)
+			} else {
+				fmt.Printf("font index should be 0 ~ %d\n", len(draw.DefaultFonts)-1)
 				return
 			}
 		}
