@@ -4,6 +4,7 @@
 
 - font index fix
 - entry fix fatal output
+- fix filter
 
 ### Add
 
