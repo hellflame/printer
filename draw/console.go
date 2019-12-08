@@ -20,6 +20,8 @@ func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 	var fill uint8
 	if fillIndex < 0 {
 		fill = 4
+	} else if fill > FillLength {
+		fill = FillLength - 1
 	} else {
 		fill = uint8(fillIndex)
 	}
@@ -31,15 +33,23 @@ func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 			r, g, b, _ := src.At(x, y).RGBA()
 			if grayMode || IsShabby {
 				shade := uint8((19595*r + 38470*g + 7471*b + 1<<15) >> 24) // convert to gray
-				if shade < shadeCliff {
-					shade = 0 // image binary
-				} else {
-					shade = 255
-				}
 				if reverse {
-					pix = string(FillBytes[shade*fill/FillLength])
+					if shade < shadeCliff {
+						shade = 255 // image binary
+					} else {
+						shade = 0
+					}
 				} else {
-					pix = string(FillBytes[(255-shade)*fill/FillLength])
+					if shade < shadeCliff {
+						shade = 0 // image binary
+					} else {
+						shade = 255
+					}
+				}
+				if shade == 255 {
+					pix = string(FillBytes[0])
+				} else {
+					pix = string(FillBytes[fill])
 				}
 
 			} else {
