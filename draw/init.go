@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-const VERSION = "0.1.1"
+const VERSION = "0.1.3"
 
 var DefaultWidth = 50
 var DefaultHeight = 80
