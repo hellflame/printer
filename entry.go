@@ -83,7 +83,7 @@ func runner() {
 	reverse := flag.BoolP("reverse", "r", false, "reverse back & foreground")
 	err := cmd.Execute()
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 	if !run {
 		return
@@ -100,7 +100,8 @@ func runner() {
 			if exist(*font) {
 				img = draw.Clip(draw.Text(*text, *font))
 			} else {
-				log.Fatal("font path not exist")
+				fmt.Println("font path not exist")
+				return
 			}
 		} else {
 			if 0 <= fontIndex && fontIndex < len(draw.DefaultFonts) {
