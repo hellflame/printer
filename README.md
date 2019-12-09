@@ -46,27 +46,33 @@ python版 终端打印机 [https://github.com/hellflame/terminal_printer](https:
 go get -u github.com/hellflame/printer
 ```
 
-若安装过程出现 `golang**/x/image` 下载失败等等连接失败的话有以下三种选择
+若安装过程出现 `golang**/x/image` 下载失败等等连接失败的话有以下两种选择
 
 ##### 使用代理
 
-可参考 https://goproxy.io/
-
-##### 下载源码
-
-```bash
-git clone github.com/hellflame/printer
-cd printer
-go install
-# 不过该过程可能依然需要下载依赖，代理也许在所难免
-make build # 在当前 dist 目录生成可执行文件(windows需要额外支持)
-```
+可参考 https://goproxy.io/ (发现问题貌似依然存在)
 
 ##### 下载可执行的二进制文件(若只需要玩具本身)
 
 查看 https://github.com/hellflame/printer/releases 
 
 根据运行操作系统选择下载可执行文件，放在当前路径或可执行路径即可
+
+### 打包发布
+
+在支持 `make` 的环境中，只需 `make build` 或指定对应操作系统即可
+
+```bash
+make build
+```
+
+也可以手动打包支持当前操作系统
+
+```bash
+CGO_ENABLED=0 go build -ldflags "-s -w" 
+```
+
+则可在当前目录得到可执行文件
 
 ### 使用
 
