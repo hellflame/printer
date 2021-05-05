@@ -1,7 +1,5 @@
 # printer
 
-[EN Doc]()
-
 golang version of terminal printer
 
 python version of terminal printer : [https://github.com/hellflame/terminal_printer](https://github.com/hellflame/terminal_printer)
