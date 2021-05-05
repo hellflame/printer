@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// generate terminal string
+// GeneratePixel create terminal string for print use
 func GeneratePixel(img *image.Image, fillIndex int, colorCode int,
 	reverse bool, grayMode bool, shadeCliff uint8) string {
 	var renders []string

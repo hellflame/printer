@@ -50,7 +50,7 @@ go get -u github.com/hellflame/printer
 
 ##### 使用代理
 
-可参考 https://goproxy.io/ (发现问题貌似依然存在)
+可参考 https://goproxy.io/ 
 
 ##### 下载可执行的二进制文件(若只需要玩具本身)
 
@@ -69,6 +69,11 @@ make build
 也可以手动打包支持当前操作系统
 
 ```bash
+# dynamic build
+go build
+
+# or
+# static build
 CGO_ENABLED=0 go build -ldflags "-s -w" 
 ```
 
@@ -77,23 +82,29 @@ CGO_ENABLED=0 go build -ldflags "-s -w"
 ### 使用
 
 ```
-terminal printer
+usage: printer [-h] [-v] [-t TEXT] [-w WIDTH] [-e HEIGHT] [-f FILTER] [-c COLOR] [-g] [-s SHADE] [--font FONT] [-r] [IMG]
 
-Usage:
-  printer [flags]
+terminal printer, print your words & image in terminal
 
-Flags:
-  -c, --color int     color code, 30 ~ 50
-  -f, --filter int    filter ascii code, 0 ~ 223 (default 73)
-      --font string   font path or font index (default "0")
-  -g, --gray          gray mode
-  -e, --height uint   default console height (default 42)
-  -h, --help          help for printer
-  -r, --reverse       reverse back & foreground
-  -s, --shade uint8   shade cliff (default 128)
-  -t, --text string   render text content (default "hellflame")
-      --version       version for printer
-  -w, --width uint    default console width (default 158)
+positional arguments:
+  IMG                         image path
+
+optional arguments:
+  -h, --help                  show this help message
+  -v, --version               show version info
+  -w WIDTH, --width WIDTH     default console width
+  -e HEIGHT, --height HEIGHT  default console height
+  -f FILTER, --filter FILTER  filter ascii code, 0 ~ 223
+  -c COLOR, --color COLOR     color code, 30 ~ 50
+  -g, --gray                  gray mode
+  -s SHADE, --shade SHADE     shade cliff
+  -r, --reverse               reverse back & foreground
+
+Text Options:
+  -t TEXT, --text TEXT        render text content
+  --font FONT                 font path or font index
+
+more info please visit https://github.com/hellflame/printer
 ```
 
 - `-t` 设置输出文字，默认作者名 (需要有字体，并且字体中包含文字)

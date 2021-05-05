@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-// load image
+// LoadImage for next use
 func LoadImage(imgPath string) image.Image {
 	f, err := os.Open(imgPath)
 	if err != nil {

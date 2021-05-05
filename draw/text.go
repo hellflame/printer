@@ -11,7 +11,7 @@ import (
 	"unicode/utf8"
 )
 
-// render text with given font
+// Text render text with given font
 func Text(text string, fontPath string) *image.Gray {
 	fontBytes, err := ioutil.ReadFile(fontPath)
 	if err != nil {
@@ -47,7 +47,7 @@ func Text(text string, fontPath string) *image.Gray {
 	return canvas
 }
 
-// clip text image to right size
+// Clip will clip text image to right size
 // for golang doesn't have any direct way to get render string size
 func Clip(img *image.Gray) image.Image {
 	bound := img.Bounds().Max
