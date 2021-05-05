@@ -8,7 +8,10 @@ import (
 	"strings"
 )
 
-const VERSION = "0.1.3"
+const VERSION = "v0.2.0"
+const FontUrl = "https://raw.githubusercontent.com/hellflame/terminal_printer/" +
+	"808004a7cd41b4383bfe6aa310c491c69d9b2556/fonts/"
+const FillLength = 224
 
 var DefaultWidth = 50
 var DefaultHeight = 80
@@ -17,11 +20,6 @@ var FillBytes []int
 var FontBase string
 var DefaultFonts = []string{"shuyan.ttf", "letter.ttf",
 	"Haibaoyuanyuan.ttf", "fengyun.ttf"}
-
-const FontUrl = "https://raw.githubusercontent.com/hellflame/terminal_printer/" +
-	"808004a7cd41b4383bfe6aa310c491c69d9b2556/fonts/"
-
-const FillLength = 224
 
 // decide default terminal size & initiate fill bytes & find out windows
 func init() {

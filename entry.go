@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/hellflame/argparse"
 	"github.com/hellflame/printer/draw"
 	"github.com/nfnt/resize"
-	"github.com/spf13/cobra"
 	"image"
 	"io/ioutil"
 	"log"
@@ -57,43 +57,52 @@ func downloadFont(fontName string) {
 	fmt.Println("font saved")
 }
 
-func runner() {
-	var imgPath string
-	var run bool
-	cmd := &cobra.Command{
-		Use:     "printer",
-		Short:   "terminal printer",
-		Version: draw.VERSION,
-		Run: func(cmd *cobra.Command, args []string) {
-			if len(args) == 1 {
-				imgPath = args[0]
+func main() {
+	parser := argparse.NewParser("printer", "terminal printer, print your words & image in terminal", &argparse.ParserConfig{
+		DisableDefaultShowHelp: true,
+		EpiLog:                 "more info please visit https://github.com/hellflame/printer"})
+	showVersion := parser.Flag("v", "version", &argparse.Option{Help: "show version info"})
+	text := parser.String("t", "text", &argparse.Option{
+		Default: "hellflame", Help: "render text content", Group: "Text Options"})
+	width := parser.Int("w", "width", &argparse.Option{
+		Default: strconv.Itoa(draw.DefaultWidth), Help: "default console width"})
+	height := parser.Int("e", "height", &argparse.Option{
+		Default: strconv.Itoa(draw.DefaultHeight), Help: "default console height"})
+	filter := parser.Int("f", "filter", &argparse.Option{
+		Default: "73", Help: fmt.Sprintf("filter ascii code, 0 ~ %d", draw.FillLength-1)})
+	color := parser.Int("c", "color", &argparse.Option{
+		Default: "0", Help: "color code, 30 ~ 50"})
+	gray := parser.Flag("g", "gray", &argparse.Option{Help: "gray mode"})
+	shade := parser.Int("s", "shade", &argparse.Option{
+		Default: "128", Help: "shade cliff"})
+	font := parser.String("", "font", &argparse.Option{
+		Default: "0", Help: "font path or font index", Group: "Text Options"})
+	reverse := parser.Flag("r", "reverse", &argparse.Option{Help: "reverse back & foreground"})
+	imgPath := parser.String("", "img", &argparse.Option{
+		Positional: true, Help: "image path", Validate: func(arg string) error {
+			if s, err := os.Stat(arg); err == nil {
+				if !s.IsDir() {
+					return nil
+				}
 			}
-			run = true
-		},
-	}
-	flag := cmd.Flags()
-	text := flag.StringP("text", "t", "hellflame", "render text content")
-	width := flag.UintP("width", "w", uint(draw.DefaultWidth), "default console width")
-	height := flag.UintP("height", "e", uint(draw.DefaultHeight), "default console height")
-	filter := flag.IntP("filter", "f", 73, fmt.Sprintf("filter ascii code, 0 ~ %d", draw.FillLength-1))
-	color := flag.IntP("color", "c", 0, "color code, 30 ~ 50")
-	gray := flag.BoolP("gray", "g", false, "gray mode")
-	shade := flag.Uint8P("shade", "s", 128, "shade cliff")
-	font := flag.String("font", "0", "font path or font index")
-	reverse := flag.BoolP("reverse", "r", false, "reverse back & foreground")
-	err := cmd.Execute()
-	if err != nil {
+			return fmt.Errorf("can't access file '%s'", arg)
+		}})
+	if e := parser.Parse(nil); e != nil {
+		fmt.Println(e.Error())
 		return
 	}
-	if !run {
+	if *showVersion {
+		fmt.Println(draw.VERSION)
 		return
 	}
 
 	var img image.Image
 
-	if imgPath != "" && exist(imgPath) {
-		img = draw.LoadImage(imgPath)
+	if *imgPath != "" {
+		// picture mode
+		img = draw.LoadImage(*imgPath)
 	} else {
+		// text mode
 		fontIndex, err := strconv.Atoi(*font)
 		if err != nil {
 			// font is given by user
@@ -114,13 +123,9 @@ func runner() {
 				return
 			}
 		}
-		*gray = true
+		// text mode special
+		*gray = !*gray
 	}
-
-	img = resize.Resize(*width, *height, img, resize.Bilinear)
-	fmt.Println(draw.GeneratePixel(&img, *filter, *color, *reverse, *gray, *shade))
-}
-
-func main() {
-	runner()
+	img = resize.Resize(uint(*width), uint(*height), img, resize.Bilinear)
+	fmt.Println(draw.GeneratePixel(&img, *filter, *color, *reverse, *gray, uint8(*shade)))
 }
