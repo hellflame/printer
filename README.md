@@ -1,5 +1,7 @@
 # printer
 
+[EN Doc](docs/en.md)
+
 golang版 终端打印机 
 
 python版 终端打印机 [https://github.com/hellflame/terminal_printer](https://github.com/hellflame/terminal_printer)
@@ -111,7 +113,7 @@ more info please visit https://github.com/hellflame/printer
 - `-c` 设置颜色输出，默认 0 表示随机颜色
 - `-f` 设置填充字符索引，部分索引输出为空白，默认输出 `i`
 - `--font` 设置下载字体索引或给定字体路径 (图片不需要字体)
-- `-g` 图片是否启用灰度模式 (文字输出默认灰度输出)
+- `-g` 图片是否启用灰度模式
 - `-s` 灰度滤波边界，即灰度二值化的边界值
 - `-e` 设置输出高度，默认当前终端高度 (若无法获得，将使用一固定高度)
 - `-w` 设置输出宽度，默认当前终端宽度 (若无法获得，将使用一固定宽度) 
