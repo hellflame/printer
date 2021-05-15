@@ -60,7 +60,8 @@ func downloadFont(fontName string) {
 func main() {
 	parser := argparse.NewParser("printer", "terminal printer, print your words & image in terminal", &argparse.ParserConfig{
 		DisableDefaultShowHelp: true,
-		EpiLog:                 "more info please visit https://github.com/hellflame/printer"})
+		EpiLog:                 "more info please visit https://github.com/hellflame/printer",
+		AddShellCompletion:     true})
 	showVersion := parser.Flag("v", "version", &argparse.Option{Help: "show version info"})
 	text := parser.String("t", "text", &argparse.Option{
 		Default: "hellflame", Help: "render text content", Group: "Text Options"})
