@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-const VERSION = "v0.3"
+const VERSION = "v0.3.1"
 const FontUrl = "https://raw.githubusercontent.com/hellflame/terminal_printer/" +
 	"808004a7cd41b4383bfe6aa310c491c69d9b2556/fonts/"
 const FillLength = 224
