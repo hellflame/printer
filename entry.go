@@ -89,7 +89,12 @@ func main() {
 			return fmt.Errorf("can't access file '%s'", arg)
 		}})
 	if e := parser.Parse(nil); e != nil {
-		fmt.Println(e.Error())
+		switch e.(type) {
+		case argparse.BreakAfterHelp, argparse.BreakAfterShellScript:
+			return // no print
+		default:
+			fmt.Println(e.Error())
+		}
 		return
 	}
 	if *showVersion {

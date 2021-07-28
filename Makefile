@@ -24,4 +24,3 @@ build-windows: dist-path
 
 clean:
 	rm -rf ${BINARY_PATH}
-
