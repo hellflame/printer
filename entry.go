@@ -57,10 +57,27 @@ func downloadFont(fontName string) {
 	fmt.Println("font saved")
 }
 
+func showEpilog() string {
+	return `try:
+	printer -t hello
+	printer -t hello --filter 34
+	printer -t hello --filter 34 -r
+	printer -t hello --filter 34 -r --color 32
+	printer -t hello --filter 34 -r --color 32 -w 100
+	printer -t hello --filter 34 -r --color 32 -w 100 -e 25	
+	...
+
+	printer /path/to/your/favorite/picture
+	...
+there's more to try
+
+more info please visit https://github.com/hellflame/printer`
+}
+
 func main() {
 	parser := argparse.NewParser("printer", "terminal printer, print your words & image in terminal", &argparse.ParserConfig{
 		DisableDefaultShowHelp: true,
-		EpiLog:                 "more info please visit https://github.com/hellflame/printer",
+		EpiLog:                 showEpilog(),
 		AddShellCompletion:     true})
 	showVersion := parser.Flag("v", "version", &argparse.Option{Help: "show version info"})
 	text := parser.String("t", "text", &argparse.Option{
