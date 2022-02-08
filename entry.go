@@ -78,7 +78,8 @@ func main() {
 	parser := argparse.NewParser("printer", "terminal printer, print your words & image in terminal", &argparse.ParserConfig{
 		DisableDefaultShowHelp: true,
 		EpiLog:                 showEpilog(),
-		AddShellCompletion:     true})
+		AddShellCompletion:     true,
+		WithHint:               true})
 	showVersion := parser.Flag("v", "version", &argparse.Option{Help: "show version info"})
 	text := parser.String("t", "text", &argparse.Option{
 		Default: "hellflame", Help: "render text content", Group: "Text Options"})
