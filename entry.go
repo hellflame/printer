@@ -2,15 +2,16 @@ package main
 
 import (
 	"fmt"
-	"github.com/hellflame/argparse"
-	"github.com/hellflame/printer/draw"
-	"github.com/nfnt/resize"
 	"image"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
+
+	"github.com/hellflame/argparse"
+	"github.com/hellflame/printer/draw"
+	"github.com/nfnt/resize"
 )
 
 func exist(p string) bool {
@@ -75,11 +76,14 @@ more info please visit https://github.com/hellflame/printer`
 }
 
 func main() {
-	parser := argparse.NewParser("printer", "terminal printer, print your words & image in terminal", &argparse.ParserConfig{
-		DisableDefaultShowHelp: true,
-		EpiLog:                 showEpilog(),
-		AddShellCompletion:     true,
-		WithHint:               true})
+	parser := argparse.NewParser("printer", "terminal printer, print your words & image in terminal",
+		&argparse.ParserConfig{
+			DisableDefaultShowHelp: true,
+			AddShellCompletion:     true,
+
+			WithColor: true,
+			EpiLog:    showEpilog(),
+			WithHint:  true})
 	showVersion := parser.Flag("v", "version", &argparse.Option{Help: "show version info"})
 	text := parser.String("t", "text", &argparse.Option{
 		Default: "hellflame", Help: "render text content", Group: "Text Options"})
@@ -107,8 +111,8 @@ func main() {
 			return fmt.Errorf("can't access file '%s'", arg)
 		}})
 	if e := parser.Parse(nil); e != nil {
-		switch e.(type) {
-		case argparse.BreakAfterHelp, argparse.BreakAfterShellScript:
+		switch e {
+		case argparse.BreakAfterHelpError, argparse.BreakAfterShellScriptError:
 			return // no print
 		default:
 			fmt.Println(e.Error())
