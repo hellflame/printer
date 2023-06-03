@@ -84,23 +84,26 @@ func main() {
 			WithColor: true,
 			EpiLog:    showEpilog(),
 			WithHint:  true})
-	showVersion := parser.Flag("v", "version", &argparse.Option{Help: "show version info"})
+	showVersion := parser.Flag("v", "version", &argparse.Option{
+		Help: "show version info"})
 	text := parser.String("t", "text", &argparse.Option{
-		Default: "hellflame", Help: "render text content", Group: "Text Options"})
+		Default: "hellflame", Help: "render text content", Group: "text"})
 	width := parser.Int("w", "width", &argparse.Option{
-		Default: strconv.Itoa(draw.DefaultWidth), Help: "default console width"})
+		Default: strconv.Itoa(draw.DefaultWidth), Help: "default console width", Group: "common"})
 	height := parser.Int("e", "height", &argparse.Option{
-		Default: strconv.Itoa(draw.DefaultHeight), Help: "default console height"})
+		Default: strconv.Itoa(draw.DefaultHeight), Help: "default console height", Group: "common"})
 	filter := parser.Int("f", "filter", &argparse.Option{
-		Default: "73", Help: fmt.Sprintf("filter ascii code, 0 ~ %d", draw.FillLength-1)})
+		Default: "73", Help: fmt.Sprintf("filter ascii code, 0 ~ %d", draw.FillLength-1), Group: "common"})
+
 	color := parser.Int("c", "color", &argparse.Option{
-		Default: "0", Help: "color code, 30 ~ 50"})
-	gray := parser.Flag("g", "gray", &argparse.Option{Help: "gray mode"})
+		Default: "0", Help: "color code, 30 ~ 50", Group: "text"})
+	gray := parser.Flag("g", "gray", &argparse.Option{Help: "gray mode", Group: "common"})
 	shade := parser.Int("s", "shade", &argparse.Option{
-		Default: "128", Help: "shade cliff"})
+		Default: "128", Help: "shade cliff", Group: "picture"})
 	font := parser.String("", "font", &argparse.Option{
-		Default: "0", Help: "font path or font index", Group: "Text Options"})
-	reverse := parser.Flag("r", "reverse", &argparse.Option{Help: "reverse back & foreground"})
+		Default: "0", Help: "font path or font index", Group: "text"})
+	reverse := parser.Flag("r", "reverse", &argparse.Option{
+		Help: "reverse back & foreground", Group: "text"})
 	imgPath := parser.String("", "img", &argparse.Option{
 		Positional: true, Help: "image path", Validate: func(arg string) error {
 			if s, err := os.Stat(arg); err == nil {
@@ -109,7 +112,7 @@ func main() {
 				}
 			}
 			return fmt.Errorf("can't access file '%s'", arg)
-		}})
+		}, Group: "picture"})
 	if e := parser.Parse(nil); e != nil {
 		switch e {
 		case argparse.BreakAfterHelpError, argparse.BreakAfterShellScriptError:
